@@ -1,0 +1,82 @@
+@model _NET_PROJECT.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="py-5 bg-main">
+    <div class="container" style="max-width: 520px;">
+        <div class="text-center mb-4">
+            <div class="brand-icon mx-auto mb-3" style="width: 48px; height: 48px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7.5" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+            </div>
+            <span class="section-badge">Security Access</span>
+            <h1 class="h3 fw-bold text-white mb-2">Create JobGuard AI Account</h1>
+            <p class="text-secondary-custom small">Register to analyze job postings and maintain your security inspection history.</p>
+        </div>
+
+        <div class="cyber-card">
+            <form asp-controller="Account" asp-action="Register" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger bg-dark border-danger text-danger mb-3 py-2 small" role="alert"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label-custom">
+                        Full Name <span class="text-gold">*</span>
+                    </label>
+                    <input asp-for="FullName" class="form-control form-control-custom" placeholder="e.g. Jane Doe" autocomplete="name" />
+                    <span asp-validation-for="FullName" class="text-danger-custom"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label-custom">
+                        Email Address <span class="text-gold">*</span>
+                    </label>
+                    <input asp-for="Email" class="form-control form-control-custom" placeholder="name@example.com" autocomplete="email" />
+                    <span asp-validation-for="Email" class="text-danger-custom"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label-custom">
+                        Password <span class="text-gold">*</span>
+                    </label>
+                    <input asp-for="Password" class="form-control form-control-custom" placeholder="At least 6 characters" autocomplete="new-password" />
+                    <span asp-validation-for="Password" class="text-danger-custom"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ConfirmPassword" class="form-label-custom">
+                        Confirm Password <span class="text-gold">*</span>
+                    </label>
+                    <input asp-for="ConfirmPassword" class="form-control form-control-custom" placeholder="Re-enter password" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger-custom"></span>
+                </div>
+
+                <button type="submit" class="btn-gold w-100 py-2 fw-bold mb-3">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="me-1">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7.5" r="4"></circle>
+                    </svg>
+                    Create Account
+                </button>
+
+                <div class="text-center pt-3 border-top border-dark-custom">
+                    <span class="text-secondary-custom small">Already have an account?</span>
+                    <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" class="text-gold fw-semibold small ms-1">
+                        Sign In &rarr;
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -1,0 +1,15 @@
+## .NET build artifacts
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+## Database files
+*.mdf
+*.ldf
+
+## Large Raw Datasets (preserve directory with README)
+Dataset/Raw/*.csv
+!Dataset/Raw/README.md
+

@@ -1,0 +1,9 @@
+/* Scoped Layout Styles */
+a {
+  color: var(--gold-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--gold-hover);
+}

@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="py-5 bg-main">
+    <div class="container" style="max-width: 600px;">
+        <div class="cyber-card text-center py-5 border-danger">
+            <div class="brand-icon mx-auto mb-3" style="width: 56px; height: 56px; border-color: var(--status-fraud); background: var(--status-fraud-bg); color: var(--status-fraud);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                </svg>
+            </div>
+            <span class="badge bg-danger mb-2">403 FORBIDDEN</span>
+            <h2 class="h3 fw-bold text-white mb-2">Access Restricted</h2>
+            <p class="text-secondary-custom mb-4" style="max-width: 440px; margin: 0 auto;">
+                You do not have authorization to view this job analysis record or administrative resource. Record ownership verification prevents unauthorized cross-user access.
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+                <a class="btn-dark-outline btn-sm" asp-controller="Home" asp-action="Index">Return to Home</a>
+                <a class="btn-gold btn-sm" asp-controller="Home" asp-action="History">My Analysis History</a>
+            </div>
+        </div>
+    </div>
+</div>
+

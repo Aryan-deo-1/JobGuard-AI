@@ -1,0 +1,255 @@
+@model _NET_PROJECT.ViewModels.JobAnalysisViewModel
+@{
+    ViewData["Title"] = "Job Posting Threat Analyzer";
+}
+
+<div class="py-5 bg-main">
+    <div class="container" style="max-width: 960px;">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <span class="section-badge">Security Inspection Tool</span>
+            <h1 class="h2 fw-bold text-white mb-2">Job Advertisement Fraud Analyzer</h1>
+            <p class="text-secondary-custom mx-auto" style="max-width: 650px;">
+                Input the advertisement information below. The platform screens for linguistic deception, advance-fee solicitation, identity impersonation, and structural recruitment anomalies.
+            </p>
+        </div>
+
+        <!-- Security / Detection Status Banner -->
+        <div class="demo-banner border-gold-custom">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-gold flex-shrink-0">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="m9 12 2 2 4-4"></path>
+            </svg>
+            <div class="small">
+                <strong class="text-white">AI Threat Detection Active:</strong> Job advertisements submitted through this form are analyzed in real time using the trained <strong>ML.NET FastTree</strong> threat model. Risk scores, probabilities, and findings are persisted in SQL Server and accessible in your History.
+            </div>
+        </div>
+
+        <!-- Quick Demo Fill Helpers -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+            <span class="text-secondary-custom small fw-semibold">Quick Pre-fill Test Cases:</span>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-dark-outline btn-sm" id="btnLoadScamSample">
+                    <span class="text-danger-custom me-1">●</span> Load Suspicious Job Sample
+                </button>
+                <button type="button" class="btn btn-dark-outline btn-sm" id="btnLoadLegitSample">
+                    <span class="text-success me-1">●</span> Load Legitimate Job Sample
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="cyber-card">
+            <form asp-controller="Home" asp-action="Analyze" method="post" id="jobAnalysisForm">
+                @Html.AntiForgeryToken()
+                
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger bg-dark border-danger text-danger mb-4" role="alert"></div>
+
+                <!-- Group 1: General Job Information -->
+                <div class="border-bottom border-dark-custom pb-3 mb-4">
+                    <h5 class="text-gold fw-bold mb-3 d-flex align-items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        1. Job Details
+                    </h5>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="JobTitle" class="form-label-custom">
+                                Job Title <span class="text-gold">*</span>
+                            </label>
+                            <input asp-for="JobTitle" class="form-control form-control-custom" placeholder="e.g. Remote Data Entry Operator, Senior Software Engineer" />
+                            <span asp-validation-for="JobTitle" class="text-danger-custom"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="EmploymentType" class="form-label-custom">
+                                Employment Type <span class="text-gold">*</span>
+                            </label>
+                            <select asp-for="EmploymentType" class="form-select form-select-custom">
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Contract">Contract / Freelance</option>
+                                <option value="Internship">Internship</option>
+                                <option value="Remote">Remote / Work-from-Home</option>
+                                <option value="Temporary">Temporary / Seasonal</option>
+                            </select>
+                            <span asp-validation-for="EmploymentType" class="text-danger-custom"></span>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label asp-for="JobLocation" class="form-label-custom">
+                                Job Location <span class="text-gold">*</span>
+                            </label>
+                            <input asp-for="JobLocation" class="form-control form-control-custom" placeholder="e.g. New York, NY / Remote, London, UK, Anywhere" />
+                            <span asp-validation-for="JobLocation" class="text-danger-custom"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 2: Company Information -->
+                <div class="border-bottom border-dark-custom pb-3 mb-4">
+                    <h5 class="text-gold fw-bold mb-3 d-flex align-items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        2. Employer & Organization Information
+                    </h5>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="CompanyName" class="form-label-custom">
+                                Company Name <span class="text-gold">*</span>
+                            </label>
+                            <input asp-for="CompanyName" class="form-control form-control-custom" placeholder="e.g. Acme Corporation, Global Dynamics" />
+                            <span asp-validation-for="CompanyName" class="text-danger-custom"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="CompanyWebsite" class="form-label-custom">
+                                Company Website <span class="text-secondary-custom small">(Optional)</span>
+                            </label>
+                            <input asp-for="CompanyWebsite" class="form-control form-control-custom" placeholder="https://company-domain.com" />
+                            <span asp-validation-for="CompanyWebsite" class="text-danger-custom"></span>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label asp-for="CompanyProfile" class="form-label-custom">
+                                Company Profile / Background <span class="text-secondary-custom small">(Optional)</span>
+                            </label>
+                            <textarea asp-for="CompanyProfile" rows="2" class="form-control form-control-custom" placeholder="Brief statement about the hiring firm or industry reputation..."></textarea>
+                            <span asp-validation-for="CompanyProfile" class="text-danger-custom"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 3: Description & Requirements -->
+                <div class="mb-4">
+                    <h5 class="text-gold fw-bold mb-3 d-flex align-items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        3. Description & Candidate Requirements
+                    </h5>
+
+                    <div class="mb-3">
+                        <label asp-for="JobDescription" class="form-label-custom">
+                            Job Description <span class="text-gold">*</span>
+                        </label>
+                        <textarea asp-for="JobDescription" rows="5" class="form-control form-control-custom" placeholder="Paste the complete job advertisement description here, including responsibilities, compensation offers, and contact instructions..."></textarea>
+                        <span asp-validation-for="JobDescription" class="text-danger-custom"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="JobRequirements" class="form-label-custom">
+                            Job Requirements & Qualifications <span class="text-secondary-custom small">(Optional)</span>
+                        </label>
+                        <textarea asp-for="JobRequirements" rows="3" class="form-control form-control-custom" placeholder="Paste required qualifications, experience level, educational background, or skill requirements..."></textarea>
+                        <span asp-validation-for="JobRequirements" class="text-danger-custom"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="JobBenefits" class="form-label-custom">
+                            Benefits & Compensation Details <span class="text-secondary-custom small">(Optional)</span>
+                        </label>
+                        <textarea asp-for="JobBenefits" rows="2" class="form-control form-control-custom" placeholder="Mentioned perks, insurance, 401(k), paid leave, signing bonuses, or equipment stipends..."></textarea>
+                        <span asp-validation-for="JobBenefits" class="text-danger-custom"></span>
+                    </div>
+                </div>
+
+                <!-- Group 4: Structured Model Features & Signals -->
+                <div class="border-top border-dark-custom pt-4 mb-4">
+                    <h5 class="text-gold fw-bold mb-3 d-flex align-items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                        4. Structured Verification Signals <span class="badge bg-dark border border-dark-custom text-gold small ms-2">Enhances ML Precision</span>
+                    </h5>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="RequiredExperience" class="form-label-custom">Required Experience Level</label>
+                            <select asp-for="RequiredExperience" class="form-select form-select-custom">
+                                <option value="Unspecified">Unspecified / Any</option>
+                                <option value="Entry level">Entry level</option>
+                                <option value="Associate">Associate</option>
+                                <option value="Mid-Senior level">Mid-Senior level</option>
+                                <option value="Director">Director</option>
+                                <option value="Executive">Executive</option>
+                                <option value="Internship">Internship</option>
+                                <option value="Not Applicable">Not Applicable</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="RequiredEducation" class="form-label-custom">Required Education Level</label>
+                            <select asp-for="RequiredEducation" class="form-select form-select-custom">
+                                <option value="Unspecified">Unspecified / Any</option>
+                                <option value="High School or equivalent">High School or equivalent</option>
+                                <option value="Associate Degree">Associate Degree</option>
+                                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                <option value="Master's Degree">Master's Degree</option>
+                                <option value="Doctorate">Doctorate</option>
+                                <option value="Certification">Certification</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-check p-3 rounded border border-dark-custom bg-secondary-custom">
+                                <input asp-for="HasCompanyLogo" class="form-check-input ms-0 me-2" type="checkbox" id="HasCompanyLogo" />
+                                <label class="form-check-label text-white small" for="HasCompanyLogo">
+                                    <strong>Posting Features Verified Official Company Logo</strong>
+                                    <div class="text-secondary-custom" style="font-size: 0.8rem;">Leave unchecked for unverified listings, messaging app solicitations, or generic placeholder logos.</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-check p-3 rounded border border-dark-custom bg-secondary-custom">
+                                <input asp-for="HasQuestions" class="form-check-input ms-0 me-2" type="checkbox" id="HasQuestions" />
+                                <label class="form-check-label text-white small" for="HasQuestions">
+                                    <strong>Application Has Screening Questions</strong>
+                                    <div class="text-secondary-custom" style="font-size: 0.8rem;">Check if the application requires answering role-specific screening questions.</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Controls -->
+                <div class="pt-3 border-top border-dark-custom d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+                    <span class="text-secondary-custom small">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-gold me-1">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        Confidential & Privacy Protected Analysis
+                    </span>
+                    <button type="submit" class="btn-gold px-4 py-2" id="btnSubmitAnalyze">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        Analyze Job
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
